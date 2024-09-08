@@ -20,6 +20,7 @@ gem 'jwt'
 # For managing cron jobs to delete posts
 gem 'sidekiq'
 
+
 # Add pagination for posts (optional)
 gem 'kaminari'
 

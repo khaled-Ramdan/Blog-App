@@ -7,7 +7,7 @@ module Api
         if user.valid?
           token = JwtService.encode(user_id: user.id)
           if user.save
-            render json: { success: true, user: user, token: token }, status: :created
+            render json: { success: true, user: UserRepresenter.new(user).as_json, token: token }, status: :created
           else
             render json: { success: false, errors: user.errors.full_messages }, status: :unprocessable_entity
           end
