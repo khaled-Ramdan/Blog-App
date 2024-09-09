@@ -1,22 +1,16 @@
+require "sidekiq/web"
 Rails.application.routes.draw do
+  mount Sidekiq::Web => "/sidekiq"
+
+
   namespace :api do
     namespace :v1 do
       # Posts
-      get "posts/index"
-      get "posts/show"
-      get "posts/new"
-      get "posts/create"
-      get "posts/edit"
-      get "posts/update"
-      get "posts/destroy"
+      resources :posts, only: [ :index, :create, :show, :edit, :update, :destroy ]
       #  Comments
-      get "comments/index"
-      get "comments/show"
-      get "comments/new"
-      get "comments/create"
-      get "comments/edit"
-      get "comments/update"
-      get "comments/destroy"
+      resources :post do
+        resources :comments, only: [ :index, :create, :edit, :destroy ]
+      end
       # User
       post "authentication/signup"
       post "authentication/login"

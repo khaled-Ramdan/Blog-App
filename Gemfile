@@ -19,6 +19,7 @@ gem 'jwt'
 
 # For managing cron jobs to delete posts
 gem 'sidekiq'
+gem 'sinatra', github: 'sinatra/sinatra'
 
 
 # Add pagination for posts (optional)
