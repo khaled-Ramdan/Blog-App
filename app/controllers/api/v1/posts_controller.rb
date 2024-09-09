@@ -1,5 +1,8 @@
 class Api::V1::PostsController < Api::V1::ApplicationController
   before_action :set_post, only: [ :show, :update, :edit, :destroy  ]
+  before_action :post_params, only: [ :create, :edit  ]
+
+
 
   def index
     @posts = Post.all
