@@ -15,7 +15,6 @@ class Api::V1::PostsController < Api::V1::ApplicationController
 
   def create
     @post = @current_user.posts.new(post_params)
-    puts post_params
 
     if @post.save
       PostsDeletionJob.perform_at(24.hours.from_now, @post.id)
@@ -48,7 +47,7 @@ class Api::V1::PostsController < Api::V1::ApplicationController
 
   def destroy
     if @post.user != @current_user
-      return render json: { success: false, errors: "Unautherized" }, status: :forbidden
+      return render json: { success: false, errors: "Unauthorized" }, status: :unauthorized
     end
     @post.destroy
     head :no_content

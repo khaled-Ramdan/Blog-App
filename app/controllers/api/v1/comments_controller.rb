@@ -19,7 +19,7 @@ class Api::V1::CommentsController < Api::V1::ApplicationController
 
   def edit
     if @comment.user.id != @current_user.id
-      return render json: { success: false, errors: "Unauthorized " }, status: :unauthorized
+      return render json: { success: false, errors: "Unauthorized" }, status: :unauthorized
     end
 
     if @comment.update(comment_params)
@@ -31,7 +31,7 @@ class Api::V1::CommentsController < Api::V1::ApplicationController
 
   def destroy
     if @comment.user.id != @current_user.id
-      return render json: { success: false, errors: "Unauthorized " }, status: :unauthorized
+      return render json: { success: false, errors: "Unauthorized" }, status: :unauthorized
     end
     @comment.destroy
     head :no_content
@@ -51,15 +51,15 @@ class Api::V1::CommentsController < Api::V1::ApplicationController
       render json: { success: false, errors: "No Post with id #{params[:id]}" }
     end
   rescue
-    render json: { success: false, errors: "No Post with id #{params[:id]}" }
+    render json: { success: false, errors: "No Post with id #{params[:id]}" }, status: :not_found
   end
 
   def set_comment
     @comment = Comment.find(params[:id])
     if @comment.nil?
-      render json: { success: false, errors: "No Comment with id #{:id}" }
+      render json: { success: false, errors: "No Comment with id #{:id}" }, status: :not_found
     end
   rescue
-    render json: { success: false, errors: "No Comment with id #{:id}" }
+    render json: { success: false, errors: "No Comment with id #{:id}" }, status: :not_found
   end
 end

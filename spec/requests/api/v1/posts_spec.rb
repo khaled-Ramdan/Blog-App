@@ -14,10 +14,13 @@ end
 
 RSpec.describe "Posts", type: :request do
   let(:user) { FactoryBot.create(:user) } # create a valid user
+  let(:otherUser) { FactoryBot.create(:user, email: "test@example2.com") } # create another user
   let(:token) { JwtService.encode(user_id: user.id) } # generate JWT for the user
   let (:mypost) { FactoryBot.create(:post, user: user) } # crerate a valid post
+  let (:otherUserPost) { FactoryBot.create(:post, user: otherUser) } # crerate a valid post
 
-  describe "GET /posts" do
+
+  describe "GET /index" do
     it "return all posts" do
       get "/api/v1/posts", headers: { "Authorization" => "Bearer #{token}" }
       expect(response).to have_http_status(:success)
@@ -48,7 +51,7 @@ RSpec.describe "Posts", type: :request do
   end
 
 
-  describe "POST /posts" do
+  describe "POST /create" do
     it "creates a new post" do
       post "/api/v1/posts",
           params: { post: { title: "New Post", body: "new body", tags: [ "tag1", "tag2", "tag3" ] } },
@@ -82,6 +85,16 @@ RSpec.describe "Posts", type: :request do
       get "/api/v1/posts/wrong_id",  headers: { "Authorization" => "Bearer #{token}" }
       expect(JSON.parse(response.body)).to include("success" => false)
       expect(JSON.parse(response.body)).to include("errors" => "No Post with id wrong_id")
+    end
+
+
+    it "try to edit a post for a different user" do
+      get "/api/v1/posts/#{otherUserPost.id}/edit",
+      headers: { "Authorization" => "Bearer #{token}" },
+      params: { post: { body: "new body" } }
+      expect(response).to have_http_status(:unauthorized)
+      expect(JSON.parse(response.body)).to include("success" => false)
+      expect(JSON.parse(response.body)).to include("errors"=>"Unauthorized")
     end
   end
 
@@ -123,6 +136,15 @@ RSpec.describe "Posts", type: :request do
       get "/api/v1/posts/wrong_id",  headers: { "Authorization" => "Bearer #{token}" }
       expect(JSON.parse(response.body)).to include("success" => false)
       expect(JSON.parse(response.body)).to include("errors" => "No Post with id wrong_id")
+    end
+
+    it "try to delete a post for a different user" do
+      delete "/api/v1/posts/#{otherUserPost.id}",
+      headers: { "Authorization" => "Bearer #{token}" }
+
+      expect(response).to have_http_status(:unauthorized)
+      expect(JSON.parse(response.body)).to include("success" => false)
+      expect(JSON.parse(response.body)).to include("errors"=>"Unauthorized")
     end
   end
 end
