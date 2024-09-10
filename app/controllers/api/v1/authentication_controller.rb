@@ -1,13 +1,14 @@
 module Api
   module V1
     class AuthenticationController < ApplicationController
+      include Rails.application.routes.url_helpers
       skip_before_action :authenticate_request, only: [ :login, :signup ]
       def signup
         user = User.new(user_params)
         if user.valid?
           token = JwtService.encode(user_id: user.id)
           if user.save
-            render json: { success: true, user: UserRepresenter.new(user).as_json, token: token }, status: :created
+            render json: { success: true, user: UserRepresenter.new(user, url_for(user.image)).as_json, token: token }, status: :created
           else
             render json: { success: false, errors: user.errors.full_messages }, status: :unprocessable_entity
           end
@@ -29,7 +30,7 @@ module Api
       private
 
       def user_params
-        params.permit(:name, :email, :password)
+        params.permit(:name, :email, :password, :image)
       end
     end
   end
