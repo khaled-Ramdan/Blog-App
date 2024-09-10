@@ -15,6 +15,7 @@ class Api::V1::PostsController < Api::V1::ApplicationController
 
   def create
     @post = @current_user.posts.new(post_params)
+    puts post_params
 
     if @post.save
       PostsDeletionJob.perform_at(24.hours.from_now, @post.id)
@@ -36,7 +37,13 @@ class Api::V1::PostsController < Api::V1::ApplicationController
     end
   end
   def update
-    # will be implemented when adding json column [updating tags only]
+    @post.update(post_params&.slice(:tags))
+
+    if @post.save
+      render json: { success: true, data: @post }, status: :ok
+    else
+      render json: { success: false, errors: @post.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -50,7 +57,7 @@ class Api::V1::PostsController < Api::V1::ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :body, :tags)
+    params.require(:post).permit(:title, :body, tags: [])
   rescue
     render json: { success: false, errors: "Missing params" }, status: :bad_request
   end

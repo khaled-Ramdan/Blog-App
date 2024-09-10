@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_10_102117) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_10_111623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -56,9 +56,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_102117) do
     t.string "title"
     t.text "body"
     t.bigint "user_id", null: false
-    t.string "tags"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tags", default: [], array: true
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
