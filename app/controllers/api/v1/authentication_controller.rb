@@ -8,7 +8,7 @@ module Api
         if user.valid?
           token = JwtService.encode(user_id: user.id)
           if user.save
-            render json: { success: true, user: UserRepresenter.new(user, url_for(user.image)).as_json, token: token }, status: :created
+            render json: { success: true, user: UserRepresenter.new(user, user.image.attached? ? url_for(user.image) : nil).as_json, token: token }, status: :created
           else
             render json: { success: false, errors: user.errors.full_messages }, status: :unprocessable_entity
           end
@@ -21,7 +21,7 @@ module Api
         user = User.find_by(email: params[:email])
         if user&.authenticate(params[:password])
           token = JwtService.encode(user_id: user.id)
-          render json: { success: true, user: user, token: token }, status: :ok
+          render json: { success: true, user: UserRepresenter.new(user, user.image.attached? ? url_for(user.image) : nil).as_json, token: token }, status: :ok
         else
           render json: { success: false, errors: "Invalid Email Or Password" }, status: :unauthorized
         end
