@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: blogApp_development
+      POSTGRES_USER: blogApp
+      POSTGRES_PASSWORD: password
+
+  redis:
+    image: redis:latest
+
+  web:
+    build: .
+    command: rails s
+    volumes:
+      - ".:/app"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgres://blogApp:password@db/blogApp_development
+      REDIS_URL: redis://redis:6379/1
+      RAILS_ENV: development
+      SECRET_KEY: dfv15513215effef
+
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - ".:/app"
+    depends_on:
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379/1
+      RAILS_ENV: development
+
+volumes:
+  postgres_data:
