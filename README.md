@@ -1,5 +1,3 @@
-# README
-
 # My Rails Application
 
 ## Overview
@@ -55,8 +53,8 @@ This application provides a platform where users can authenticate, create, manag
 
 1. **Clone the Repository**
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/khaled-Ramdan/Blog-App.git
+   cd Blog-App
 
 
 ## How to run ?
