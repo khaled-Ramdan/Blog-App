@@ -57,9 +57,9 @@ class Api::V1::CommentsController < Api::V1::ApplicationController
   def set_comment
     @comment = Comment.find(params[:id])
     if @comment.nil?
-      render json: { success: false, errors: "No Comment with id #{:id}" }, status: :not_found
+      render json: { success: false, errors: "No Comment with id #{params[:id]}" }, status: :not_found
     end
   rescue
-    render json: { success: false, errors: "No Comment with id #{:id}" }, status: :not_found
+    render json: { success: false, errors: "No Comment with id #{params[:id]}" }, status: :not_found
   end
 end
