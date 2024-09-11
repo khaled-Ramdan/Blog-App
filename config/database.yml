@@ -10,7 +10,9 @@ default: &default
 development:
   <<: *default
   database: rails_postgres_development
+  host: db
 
 test:
   <<: *default
   database: rails_postgres_test
+  host: db
