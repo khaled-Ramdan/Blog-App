@@ -57,12 +57,20 @@ This application provides a platform where users can authenticate, create, manag
    cd Blog-App
 
 
-## How to run ?
-- have docker installed to your machine
+## How to run?
+- have docker installed on your machine
 - run `docker-compose up` command
 
 ## Demo 
 
 
 https://github.com/user-attachments/assets/8147a1dc-238a-4dd1-827f-f176647c10ab
+
+
+## Posts Schedule Deletion
+
+
+https://github.com/user-attachments/assets/2637326d-10fc-4ae3-81d7-a4ab79c9df43
+
+
 
