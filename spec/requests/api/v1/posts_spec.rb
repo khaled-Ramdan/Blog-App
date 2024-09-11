@@ -1,16 +1,5 @@
 require 'rails_helper'
 
-# Test for JWT authentication
-RSpec.shared_examples "unauthorized access" do |request_method|
-  it "returns http unauthorized" do
-    send(request_method, request_path, headers: { "Authorization" => "Bearer invalid_token" })
-    expect(response).to have_http_status(:unauthorized)
-    expect(JSON.parse(response.body)).to include("success" => false)
-    expect(JSON.parse(response.body)).to include("errors" => "Unauthorized")
-  end
-end
-
-
 
 RSpec.describe "Posts", type: :request do
   let(:user) { FactoryBot.create(:user) } # create a valid user
