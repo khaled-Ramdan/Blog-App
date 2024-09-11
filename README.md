@@ -58,6 +58,6 @@ This application provides a platform where users can authenticate, create, manag
 
 
 ## How to run ?
-1 - have docker installed to your machine
-2 - run `docker-compose up` command
+- have docker installed to your machine
+- run `docker-compose up` command
 
